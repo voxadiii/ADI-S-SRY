@@ -9,29 +9,25 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
     font-family: 'Quicksand', sans-serif;
     user-select: none;
     background: #061124;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* ── PAGE CONTROL (FOOLPROOF TOGGLE) ──── */
+  /* ── PAGE CONTROL (MOBILE FRIENDLY SCROLL) ── */
   .page {
     display: none;
-    position: absolute;
-    top: 0; left: 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     box-sizing: border-box;
-    z-index: 1;
+    position: relative;
   }
   .page.active-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    z-index: 10;
   }
 
   /* ── PASTEL GRID BACKGROUND (PAGES 1 & 2) ── */
@@ -41,9 +37,9 @@
       linear-gradient(rgba(240, 195, 205, 0.45) 1px, transparent 1px),
       linear-gradient(90deg, rgba(240, 195, 205, 0.45) 1px, transparent 1px);
     background-size: 26px 26px;
-    padding: 24px 18px 18px;
-    overflow: hidden;
-    position: relative;
+    padding: 24px 18px 40px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .washi-top-right {
@@ -76,6 +72,10 @@
   }
 
   /* ── SCREEN 1: COVER ─────────────────── */
+  #page-1 {
+    justify-content: space-between;
+    height: 100vh;
+  }
   .cover-header {
     margin-top: 10vh;
     text-align: center;
@@ -104,7 +104,7 @@
   .dash-btn {
     border: 2px dashed #9c2d4c;
     background: #fff0f3;
-    padding: 12px 42px;
+    padding: 13px 44px;
     border-radius: 30px;
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
@@ -141,20 +141,22 @@
     color: #8c1d40;
   }
 
-  /* ── SCREEN 2: THE LETTER ────────────── */
+  /* ── SCREEN 2: THE LETTER CARD ───────── */
+  #page-2 {
+    min-height: 100vh;
+    height: auto;
+    padding-bottom: 40px;
+  }
   .letter-wrapper {
-    width: 94%;
+    width: 95%;
     max-width: 480px;
-    height: 70vh;
     background: #fffdf7;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(160, 60, 80, 0.18);
     position: relative;
     border: 1px solid rgba(240, 180, 195, 0.6);
-    margin-top: 2vh;
+    margin: 30px auto 20px;
     z-index: 2;
-    display: flex;
-    flex-direction: column;
   }
   .letter-tape {
     position: absolute;
@@ -164,31 +166,49 @@
     background: rgba(245, 140, 160, 0.85);
     box-shadow: 0 2px 5px rgba(0,0,0,0.08);
   }
-  .letter-scroll-area {
-    padding: 26px 20px 20px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
+  .letter-content {
+    padding: 30px 22px 24px;
   }
   .letter-text {
     font-family: 'Playfair Display', serif;
     color: #3b1c23;
-    font-size: clamp(0.96rem, 3.6vw, 1.05rem);
-    line-height: 1.7;
+    font-size: clamp(0.96rem, 3.8vw, 1.06rem);
+    line-height: 1.75;
   }
-  .letter-text p { margin-bottom: 14px; }
+  .letter-text p { margin-bottom: 15px; }
   .letter-signature {
     font-family: 'Caveat', cursive;
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     color: #b82d4c;
-    margin-top: 15px;
+    margin-top: 18px;
+  }
+
+  /* Floating Scroll Down Prompt */
+  .scroll-indicator {
+    font-size: 0.82rem;
+    color: #b82d4c;
+    background: rgba(255, 230, 236, 0.9);
+    border: 1px dashed #f28b9f;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    animation: bounceDown 1.8s infinite;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 5;
+  }
+  @keyframes bounceDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
   }
 
   /* ── SCREEN 3: REALISTIC RAIN & DOODLE ── */
   #page-3 {
-    background: #061124;
-    padding: 0;
+    height: 100vh;
     overflow: hidden;
+    position: fixed;
+    top: 0; left: 0;
   }
   canvas#scene-canvas {
     position: absolute;
@@ -198,13 +218,13 @@
   }
   .doodle-ui {
     position: absolute;
-    top: 28px;
+    top: 24px;
     width: 100%;
     text-align: center;
     color: #ffffff;
     z-index: 10;
     pointer-events: none;
-    padding: 0 15px;
+    padding: 0 16px;
   }
   .doodle-title {
     font-family: 'Gaegu', cursive;
@@ -223,28 +243,31 @@
 
   /* ── ADITYA WATERMARK FOOTER ──────────── */
   .aditya-copyright {
-    position: absolute;
-    bottom: 8px;
     width: 100%;
     text-align: center;
     font-size: 0.72rem;
     letter-spacing: 1.5px;
     font-family: 'Quicksand', sans-serif;
     pointer-events: none;
+    margin-top: 15px;
+  }
+  .fixed-watermark {
+    position: absolute;
+    bottom: 8px;
     z-index: 25;
   }
   .dark-watermark {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.45);
     text-shadow: 0 1px 4px rgba(0,0,0,0.8);
   }
   .light-watermark {
-    color: rgba(140, 29, 64, 0.45);
+    color: rgba(140, 29, 64, 0.5);
   }
 </style>
 </head>
 <body>
 
-<!-- Audio Player linked directly to your local song.mp3 -->
+<!-- Audio file sitting in your repository -->
 <audio id="bgm" loop preload="auto">
   <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -296,7 +319,7 @@
   
   <div class="letter-wrapper">
     <div class="letter-tape"></div>
-    <div class="letter-scroll-area">
+    <div class="letter-content">
       <div class="letter-text">
         <p><strong>Dearest tinu</strong></p>
         <p>My babe, 😭</p>
@@ -311,8 +334,12 @@
     </div>
   </div>
 
-  <div style="display: flex; gap: 14px; align-items: center; z-index: 15; margin-bottom: 22px;">
-    <button type="button" class="dash-btn" style="padding: 10px 22px; font-size: 0.95rem;" onclick="showPage(1)">Back</button>
+  <div class="scroll-indicator">
+    <span>Scroll down for more</span> ↓
+  </div>
+
+  <div style="display: flex; gap: 14px; align-items: center; z-index: 15; margin-bottom: 20px;">
+    <button type="button" class="dash-btn" style="padding: 11px 24px; font-size: 0.95rem;" onclick="showPage(1)">Back</button>
     <button type="button" class="dash-btn" onclick="showPage(3)">Continue ❤️</button>
   </div>
 
@@ -330,7 +357,7 @@
 
   <canvas id="scene-canvas"></canvas>
 
-  <div class="aditya-copyright dark-watermark">
+  <div class="aditya-copyright fixed-watermark dark-watermark">
     Crafted with all my love • © Aditya | All Rights Reserved
   </div>
 </div>
@@ -347,11 +374,12 @@ function showPage(num) {
     p.style.display = 'none';
   });
 
-  // Display target page
+  // Display target page and scroll to top
   const target = document.getElementById('page-' + num);
   if (target) {
     target.style.display = 'flex';
     target.classList.add('active-page');
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   // Audio Playback
@@ -378,11 +406,11 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-const RAIN_COUNT = 320;
+const RAIN_COUNT = 300;
 const raindrops = Array.from({length: RAIN_COUNT}, () => ({
   x: Math.random() * window.innerWidth,
   y: Math.random() * window.innerHeight,
-  len: Math.random() * 22 + 16,
+  len: Math.random() * 20 + 16,
   vy: Math.random() * 8 + 14,
   vx: -1.5,
   alpha: Math.random() * 0.4 + 0.25
@@ -515,7 +543,6 @@ function renderScene() {
     const dy = d.y - umbCY;
     const dist = Math.sqrt(dx*dx + dy*dy);
 
-    // Collision with top dome of umbrella
     if (dist < umbRadius && d.y < umbCY && d.y > umbCY - umbRadius) {
       if (Math.random() < 0.25) {
         splashes.push({
@@ -536,7 +563,6 @@ function renderScene() {
     d.y += d.vy;
     d.x += d.vx;
 
-    // Ground splash
     if (d.y > H * 0.94) {
       if (Math.random() < 0.15) {
         splashes.push({
@@ -548,7 +574,7 @@ function renderScene() {
     }
   });
 
-  // Render splashes
+  // Splash circles
   for (let i = splashes.length - 1; i >= 0; i--) {
     const s = splashes[i];
     ctx.beginPath();
