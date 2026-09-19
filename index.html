@@ -2,51 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For Tinu ❤️</title>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gaegu:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 100vw;
-    height: 100vh;
+  html, body {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     font-family: 'Quicksand', sans-serif;
     user-select: none;
-    background: #ffeef2;
+    background: #061124;
   }
 
-  /* ── VIEWPORT SLIDER ──────────────────── */
-  #slider {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1);
-  }
-  .screen {
+  /* ── VIEWPORT CONTAINER ──────────────── */
+  .page {
     position: absolute;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 18px;
+    padding: 24px 18px 18px;
     box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
   }
-  #screen-1 { transform: translateY(0%); }
-  #screen-2 { transform: translateY(100%); }
-  #screen-3 { transform: translateY(200%); }
+  .page.active {
+    display: flex;
+    opacity: 1;
+  }
 
-  /* ── PASTEL GRID NOTEBOOK BACKGROUND ──── */
+  /* ── PASTEL GRID BACKGROUND (SCREENS 1 & 2) ── */
   .grid-bg {
     background-color: #fff9fa;
     background-image: 
       linear-gradient(rgba(240, 195, 205, 0.45) 1px, transparent 1px),
       linear-gradient(90deg, rgba(240, 195, 205, 0.45) 1px, transparent 1px);
     background-size: 26px 26px;
-    position: relative;
     overflow: hidden;
   }
 
@@ -58,6 +54,7 @@
     transform: rotate(24deg);
     opacity: 0.85;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    pointer-events: none;
   }
   .washi-mid-left {
     position: absolute;
@@ -66,6 +63,7 @@
     background: repeating-linear-gradient(-45deg, #f8a5b8, #f8a5b8 8px, #f092a6 8px, #f092a6 16px);
     transform: rotate(-18deg);
     opacity: 0.8;
+    pointer-events: none;
   }
   .scallop-pink {
     position: absolute;
@@ -74,17 +72,18 @@
     background: #ffd6e0;
     border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
     z-index: 1;
+    pointer-events: none;
   }
 
   /* ── SCREEN 1: COVER ─────────────────── */
   .cover-header {
-    margin-top: 13vh;
+    margin-top: 12vh;
     text-align: center;
     z-index: 2;
   }
   .cover-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.8rem, 9vw, 4.4rem);
+    font-size: clamp(2.6rem, 8vw, 4.2rem);
     font-weight: 700;
     color: #8c1d40;
     letter-spacing: 1px;
@@ -102,10 +101,11 @@
     font-style: italic;
   }
 
+  /* Buttons */
   .dash-btn {
     border: 2px dashed #9c2d4c;
     background: #fff0f3;
-    padding: 12px 45px;
+    padding: 12px 42px;
     border-radius: 30px;
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
@@ -113,12 +113,13 @@
     color: #8c1d40;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(230, 100, 130, 0.18);
-    transition: all 0.25s ease;
+    transition: transform 0.2s ease, background 0.2s ease;
     z-index: 5;
     outline: none;
   }
   .dash-btn:active { transform: scale(0.95); background: #ffd9e2; }
 
+  /* Bunny Container */
   .bunny-container {
     position: relative;
     width: 170px;
@@ -126,7 +127,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     z-index: 2;
   }
   .speech-bubble {
@@ -146,13 +147,13 @@
   .letter-wrapper {
     width: 100%;
     max-width: 440px;
-    height: 68vh;
+    height: 66vh;
     background: #fffdf7;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(160, 60, 80, 0.15);
     position: relative;
     border: 1px solid rgba(240, 180, 195, 0.5);
-    margin-top: 2vh;
+    margin-top: 3vh;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -168,13 +169,12 @@
   .letter-scroll-area {
     padding: 26px 20px 20px;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #f7cad0 transparent;
+    -webkit-overflow-scrolling: touch;
   }
   .letter-text {
     font-family: 'Playfair Display', serif;
     color: #3b1c23;
-    font-size: clamp(0.96rem, 3.6vw, 1.05rem);
+    font-size: clamp(0.95rem, 3.8vw, 1.05rem);
     line-height: 1.68;
   }
   .letter-text p { margin-bottom: 12px; }
@@ -186,23 +186,16 @@
   }
 
   /* ── SCREEN 3: REALISTIC RAIN & DOODLE ── */
-  #screen-3 {
+  #page-3 {
     background: #061124;
     padding: 0;
     overflow: hidden;
   }
-  canvas#rain-canvas {
+  canvas#scene-canvas {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    z-index: 1;
-  }
-  canvas#doodle-canvas {
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 4;
-    pointer-events: none;
+    z-index: 2;
   }
   .doodle-ui {
     position: absolute;
@@ -216,7 +209,7 @@
   }
   .doodle-title {
     font-family: 'Gaegu', cursive;
-    font-size: clamp(2.1rem, 7vw, 3.2rem);
+    font-size: clamp(2rem, 7vw, 3.2rem);
     letter-spacing: 2px;
     color: #ffe6eb;
     text-shadow: 0 0 18px rgba(255, 105, 140, 0.85);
@@ -232,7 +225,7 @@
   /* ── ADITYA WATERMARK FOOTER ──────────── */
   .aditya-copyright {
     position: absolute;
-    bottom: 10px;
+    bottom: 8px;
     width: 100%;
     text-align: center;
     font-size: 0.72rem;
@@ -242,7 +235,7 @@
     z-index: 20;
   }
   .dark-watermark {
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.4);
     text-shadow: 0 1px 4px rgba(0,0,0,0.8);
   }
   .light-watermark {
@@ -252,180 +245,266 @@
 </head>
 <body>
 
-<!-- Local Repo Audio File -->
+<!-- Audio Player linked to your uploaded song.mp3 -->
 <audio id="bgm" loop preload="auto">
   <source src="song.mp3" type="audio/mpeg">
 </audio>
 
-<div id="slider">
+<!-- ── PAGE 1: COVER ── -->
+<div class="page grid-bg active" id="page-1">
+  <div class="scallop-pink"></div>
+  <div class="washi-top-right"></div>
+  <div class="washi-mid-left"></div>
 
-  <!-- ── SCREEN 1: I'M SORRY (COVER) ── -->
-  <section class="screen grid-bg" id="screen-1">
-    <div class="scallop-pink"></div>
-    <div class="washi-top-right"></div>
-    <div class="washi-mid-left"></div>
+  <div class="cover-header">
+    <h1 class="cover-title">I'm Sorry</h1>
+    <div class="cover-title-line"></div>
+    <p class="cover-subtitle">Can we talk for a minute, Tinu?</p>
+  </div>
 
-    <div class="cover-header">
-      <h1 class="cover-title">I'm Sorry</h1>
-      <div class="cover-title-line"></div>
-      <p class="cover-subtitle">Can we talk for a minute, Tinu?</p>
-    </div>
+  <button class="dash-btn" onclick="showPage(2)">Open</button>
 
-    <button class="dash-btn" onclick="goToStep(2)">Open</button>
+  <div class="bunny-container">
+    <div class="speech-bubble">I'm sorry..</div>
+    <svg width="130" height="130" viewBox="0 0 120 120">
+      <ellipse cx="42" cy="30" rx="10" ry="26" fill="#ffffff" stroke="#222" stroke-width="2.5" transform="rotate(-15 42 30)" />
+      <ellipse cx="42" cy="30" rx="6" ry="18" fill="#ffccd5" transform="rotate(-15 42 30)" />
+      <ellipse cx="78" cy="30" rx="10" ry="26" fill="#ffffff" stroke="#222" stroke-width="2.5" transform="rotate(15 78 30)" />
+      <ellipse cx="78" cy="30" rx="6" ry="18" fill="#ffccd5" transform="rotate(15 78 30)" />
+      <circle cx="60" cy="72" r="32" fill="#ffffff" stroke="#222" stroke-width="2.5" />
+      <ellipse cx="48" cy="68" rx="4" ry="6" fill="#222" />
+      <circle cx="46.5" cy="65.5" r="1.5" fill="#fff" />
+      <ellipse cx="72" cy="68" rx="4" ry="6" fill="#222" />
+      <circle cx="70.5" cy="65.5" r="1.5" fill="#fff" />
+      <path d="M 44 58 Q 48 61 52 62" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 76 58 Q 72 61 68 62" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 55 83 Q 60 78 65 83" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" />
+      <ellipse cx="42" cy="76" rx="5" ry="3" fill="#ff99aa" opacity="0.6" />
+      <ellipse cx="78" cy="76" rx="5" ry="3" fill="#ff99aa" opacity="0.6" />
+      <ellipse cx="50" cy="104" rx="7" ry="5" fill="#ffffff" stroke="#222" stroke-width="2.2" />
+      <ellipse cx="70" cy="104" rx="7" ry="5" fill="#ffffff" stroke="#222" stroke-width="2.2" />
+    </svg>
+  </div>
 
-    <div class="bunny-container">
-      <div class="speech-bubble">I'm sorry..</div>
-      <svg width="130" height="130" viewBox="0 0 120 120">
-        <!-- Ears -->
-        <ellipse cx="42" cy="30" rx="10" ry="26" fill="#ffffff" stroke="#222" stroke-width="2.5" transform="rotate(-15 42 30)" />
-        <ellipse cx="42" cy="30" rx="6" ry="18" fill="#ffccd5" transform="rotate(-15 42 30)" />
-        <ellipse cx="78" cy="30" rx="10" ry="26" fill="#ffffff" stroke="#222" stroke-width="2.5" transform="rotate(15 78 30)" />
-        <ellipse cx="78" cy="30" rx="6" ry="18" fill="#ffccd5" transform="rotate(15 78 30)" />
-        <!-- Head -->
-        <circle cx="60" cy="72" r="32" fill="#ffffff" stroke="#222" stroke-width="2.5" />
-        <!-- Sad Eyes with tears -->
-        <ellipse cx="48" cy="68" rx="4" ry="6" fill="#222" />
-        <circle cx="46.5" cy="65.5" r="1.5" fill="#fff" />
-        <ellipse cx="72" cy="68" rx="4" ry="6" fill="#222" />
-        <circle cx="70.5" cy="65.5" r="1.5" fill="#fff" />
-        <!-- Eyebrows -->
-        <path d="M 44 58 Q 48 61 52 62" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-        <path d="M 76 58 Q 72 61 68 62" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-        <!-- Sad Mouth -->
-        <path d="M 55 83 Q 60 78 65 83" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" />
-        <!-- Blushing Cheeks -->
-        <ellipse cx="42" cy="76" rx="5" ry="3" fill="#ff99aa" opacity="0.6" />
-        <ellipse cx="78" cy="76" rx="5" ry="3" fill="#ff99aa" opacity="0.6" />
-        <!-- Tucked Paws -->
-        <ellipse cx="50" cy="104" rx="7" ry="5" fill="#ffffff" stroke="#222" stroke-width="2.2" />
-        <ellipse cx="70" cy="104" rx="7" ry="5" fill="#ffffff" stroke="#222" stroke-width="2.2" />
-      </svg>
-    </div>
+  <div class="aditya-copyright light-watermark">
+    Crafted with all my love • © Aditya | All Rights Reserved
+  </div>
+</div>
 
-    <div class="aditya-copyright light-watermark">
-      Crafted with all my love • © Aditya | All Rights Reserved
-    </div>
-  </section>
-
-  <!-- ── SCREEN 2: YOUR EXACT LETTER ── -->
-  <section class="screen grid-bg" id="screen-2">
-    <div class="washi-top-right"></div>
-    
-    <div class="letter-wrapper">
-      <div class="letter-tape"></div>
-      <div class="letter-scroll-area">
-        <div class="letter-text">
-          <p><strong>Dearest tinu</strong></p>
-          <p>My babe, 😭</p>
-          <p>Yrr please maaf krdena yaar ... mujhe Idk ky hogya merse mene ek sec bhi nhi socha yaaar 😭😭😭 mujhe schi bilkul acha nhi lg rha h ....</p>
-          <p>You deserved softness from me...You deserved to feel safe and heard and mai ky ky bola tumse ky sab bola tha aise treat krunga aise rakhunga but at last ky kiya mene 😭😭😭😭</p>
-          <p>Yrr,I see that so clearly now, and I never want to make you feel that way again....</p>
-          <p>I cannot take back what happened ,but I promise to love you better with every single day....I really don't know yaar 😭😭 But I will do 😭 ..FOR YOU...FOR YOU.....FOR YOU....JUST FOR YOU......MY EVERYTHING ♥️</p>
-          <p>At last sorry,<br>
-          I know my soch rhi hogi uss tym toh kuch bhi boldia and ky fayda but yaar mujhe bhi bura lga tha na ik baat bdi nhi thi but mene bna diya bas issiliye please 🙏🙏 I AM REALLY SORRY......</p>
-          <div class="letter-signature">Always yours, Aditya ❤️‍🩹</div>
-        </div>
+<!-- ── PAGE 2: YOUR EXACT LETTER ── -->
+<div class="page grid-bg" id="page-2">
+  <div class="washi-top-right"></div>
+  
+  <div class="letter-wrapper">
+    <div class="letter-tape"></div>
+    <div class="letter-scroll-area">
+      <div class="letter-text">
+        <p><strong>Dearest tinu</strong></p>
+        <p>My babe, 😭</p>
+        <p>Yrr please maaf krdena yaar ... mujhe Idk ky hogya merse mene ek sec bhi nhi socha yaaar 😭😭😭 mujhe schi bilkul acha nhi lg rha h ....</p>
+        <p>You deserved softness from me...You deserved to feel safe and heard and mai ky ky bola tumse ky sab bola tha aise treat krunga aise rakhunga but at last ky kiya mene 😭😭😭😭</p>
+        <p>Yrr,I see that so clearly now, and I never want to make you feel that way again....</p>
+        <p>I cannot take back what happened ,but I promise to love you better with every single day....I really don't know yaar 😭😭 But I will do 😭 ..FOR YOU...FOR YOU.....FOR YOU....JUST FOR YOU......MY EVERYTHING ♥️</p>
+        <p>At last sorry,<br>
+        I know my soch rhi hogi uss tym toh kuch bhi boldia and ky fayda but yaar mujhe bhi bura lga tha na ik baat bdi nhi thi but mene bna diya bas issiliye please 🙏🙏 I AM REALLY SORRY......</p>
+        <div class="letter-signature">Always yours, Aditya ❤️‍🩹</div>
       </div>
     </div>
+  </div>
 
-    <div style="display: flex; gap: 14px; align-items: center; z-index: 5; margin-bottom: 22px;">
-      <button class="dash-btn" style="padding: 10px 22px; font-size: 0.95rem;" onclick="goToStep(1)">Back</button>
-      <button class="dash-btn" onclick="goToStep(3)">Continue</button>
-    </div>
+  <div style="display: flex; gap: 14px; align-items: center; z-index: 5; margin-bottom: 22px;">
+    <button class="dash-btn" style="padding: 10px 22px; font-size: 0.95rem;" onclick="showPage(1)">Back</button>
+    <button class="dash-btn" onclick="showPage(3)">Continue ❤️</button>
+  </div>
 
-    <div class="aditya-copyright light-watermark">
-      Crafted with all my love • © Aditya | All Rights Reserved
-    </div>
-  </section>
+  <div class="aditya-copyright light-watermark">
+    Crafted with all my love • © Aditya | All Rights Reserved
+  </div>
+</div>
 
-  <!-- ── SCREEN 3: REALISTIC RAIN & DOODLE SCENE ── -->
-  <section class="screen" id="screen-3">
-    <div class="doodle-ui">
-      <div class="doodle-title">Always by your side, Tinu ❤️</div>
-      <div class="music-prompt">No matter how heavy the rain is, I will always hold the umbrella for you.</div>
-    </div>
+<!-- ── PAGE 3: REALISTIC RAIN & DOODLE SCENE ── -->
+<div class="page" id="page-3">
+  <div class="doodle-ui">
+    <div class="doodle-title">Always by your side, Tinu ❤️</div>
+    <div class="music-prompt">No matter how heavy the rain gets, I will always hold the umbrella for you.</div>
+  </div>
 
-    <canvas id="rain-canvas"></canvas>
-    <canvas id="doodle-canvas"></canvas>
+  <canvas id="scene-canvas"></canvas>
 
-    <div class="aditya-copyright dark-watermark">
-      Crafted with all my love • © Aditya | All Rights Reserved
-    </div>
-  </section>
-
+  <div class="aditya-copyright dark-watermark">
+    Crafted with all my love • © Aditya | All Rights Reserved
+  </div>
 </div>
 
 <script>
-/* ── NAVIGATION & AUDIO ─────────────────── */
-const slider = document.getElementById('slider');
-const bgm    = document.getElementById('bgm');
+/* ── SCREEN CONTROLLER ───────────────────── */
+const bgm = document.getElementById('bgm');
 
-function goToStep(step) {
-  if (step === 1) {
-    slider.style.transform = 'translateY(0%)';
-  } else if (step === 2) {
-    slider.style.transform = 'translateY(-100%)';
+function showPage(num) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + num);
+  if (target) target.classList.add('active');
+
+  // Trigger song on first user interaction
+  if (num === 2 || num === 3) {
     bgm.play().catch(() => {});
-  } else if (step === 3) {
-    slider.style.transform = 'translateY(-200%)';
-    bgm.play().catch(() => {});
+  }
+  if (num === 3) {
+    resizeCanvas();
   }
 }
 
-/* ── REALISTIC RAIN & REFLECTION SYSTEM ─── */
-const rainC   = document.getElementById('rain-canvas');
-const rCtx    = rainC.getContext('2d');
-const doodleC = document.getElementById('doodle-canvas');
-const dCtx    = doodleC.getContext('2d');
-
+/* ── RAINY DOODLE SCENE CANVAS ───────────── */
+const canvas = document.getElementById('scene-canvas');
+const ctx    = canvas.getContext('2d');
 let W, H;
-function resizeCanvases() {
-  W = rainC.width = doodleC.width = window.innerWidth;
-  H = rainC.height = doodleC.height = window.innerHeight;
-  drawDoodleScene();
-}
-window.addEventListener('resize', resizeCanvases);
 
-// Rain particles & ground splashes
+function resizeCanvas() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Rain drops and splashes
 const RAIN_COUNT = 320;
-const raindrops  = Array.from({length: RAIN_COUNT}, () => ({
+const raindrops = Array.from({length: RAIN_COUNT}, () => ({
   x: Math.random() * window.innerWidth,
   y: Math.random() * window.innerHeight,
-  len: Math.random() * 24 + 16,
+  len: Math.random() * 22 + 16,
   vy: Math.random() * 8 + 14,
-  vx: -1.4,
-  alpha: Math.random() * 0.4 + 0.2
+  vx: -1.5,
+  alpha: Math.random() * 0.4 + 0.25
 }));
-
 const splashes = [];
 
-function renderRain() {
-  rCtx.clearRect(0, 0, W, H);
+function renderScene() {
+  if (!document.getElementById('page-3').classList.contains('active')) {
+    requestAnimationFrame(renderScene);
+    return;
+  }
 
-  // Atmospheric Deep Night Gradient
-  const sky = rCtx.createLinearGradient(0, 0, 0, H);
+  ctx.clearRect(0, 0, W, H);
+
+  // 1. Deep Midnight Gradient Background
+  const sky = ctx.createLinearGradient(0, 0, 0, H);
   sky.addColorStop(0, '#0a172e');
   sky.addColorStop(0.65, '#050c18');
   sky.addColorStop(1, '#02050a');
-  rCtx.fillStyle = sky;
-  rCtx.fillRect(0, 0, W, H);
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, W, H);
 
-  // Umbrella bouncing logic
   const CX = W / 2;
   const SC = Math.min(W, H) / 600;
   const BASE_Y = H * 0.82;
   const umbCY = BASE_Y - 145 * SC;
   const umbRadius = 135 * SC;
 
-  rCtx.lineWidth = 1.3;
+  // 2. Fairy Lights Overhead
+  const drawString = (yOff, count) => {
+    ctx.beginPath();
+    ctx.moveTo(0, yOff);
+    ctx.quadraticCurveTo(CX, yOff + 45 * SC, W, yOff + 10 * SC);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    for (let i = 1; i < count; i++) {
+      const t = i / count;
+      const bx = (1 - t) * (1 - t) * 0 + 2 * (1 - t) * t * CX + t * t * W;
+      const by = (1 - t) * (1 - t) * yOff + 2 * (1 - t) * t * (yOff + 45 * SC) + t * t * (yOff + 10 * SC);
+
+      ctx.beginPath();
+      ctx.arc(bx, by, 7.5 * SC, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 238, 180, 0.95)';
+      ctx.shadowColor = '#ffe394';
+      ctx.shadowBlur = 18;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  };
+  drawString(H * 0.13, 9);
+  drawString(H * 0.22, 11);
+
+  // 3. Wet Ground Silhouette
+  ctx.beginPath();
+  ctx.moveTo(0, BASE_Y + 70 * SC);
+  ctx.quadraticCurveTo(CX, BASE_Y + 15 * SC, W, BASE_Y + 70 * SC);
+  ctx.lineTo(W, H);
+  ctx.lineTo(0, H);
+  ctx.fillStyle = '#040912';
+  ctx.fill();
+
+  // 4. Red Umbrella Structure
+  ctx.beginPath();
+  ctx.arc(CX, umbCY, umbRadius, Math.PI, 0, false);
+  ctx.fillStyle = '#e61e4d';
+  ctx.fill();
+  ctx.lineWidth = 3.5 * SC;
+  ctx.strokeStyle = '#120206';
+  ctx.stroke();
+
+  // Scalloped Rims & Ribs
+  ctx.beginPath();
+  const segments = 5;
+  for (let i = 0; i < segments; i++) {
+    const x1 = CX - umbRadius + (i * (umbRadius * 2) / segments);
+    const x2 = x1 + (umbRadius * 2) / segments;
+    ctx.quadraticCurveTo((x1 + x2) / 2, umbCY - 12 * SC, x2, umbCY);
+    ctx.moveTo(CX, umbCY - umbRadius);
+    ctx.lineTo((x1 + x2) / 2, umbCY);
+  }
+  ctx.stroke();
+
+  // Handle
+  ctx.beginPath();
+  ctx.moveTo(CX, umbCY);
+  ctx.lineTo(CX, BASE_Y - 20 * SC);
+  ctx.quadraticCurveTo(CX, BASE_Y - 8 * SC, CX - 12 * SC, BASE_Y - 8 * SC);
+  ctx.strokeStyle = '#1f1f1f';
+  ctx.lineWidth = 4.5 * SC;
+  ctx.stroke();
+
+  // 5. Blue Doodle (Aditya)
+  const bX = CX - 48 * SC;
+  const bY = BASE_Y + 15 * SC;
+  ctx.fillStyle = '#1e88e5';
+  ctx.beginPath();
+  ctx.ellipse(bX, bY, 34 * SC, 46 * SC, -0.05, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(bX, bY - 56 * SC, 26 * SC, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Arm holding the umbrella
+  ctx.beginPath();
+  ctx.moveTo(bX + 18 * SC, bY - 20 * SC);
+  ctx.quadraticCurveTo(CX - 5 * SC, BASE_Y - 15 * SC, CX, BASE_Y - 22 * SC);
+  ctx.lineWidth = 9 * SC;
+  ctx.strokeStyle = '#1e88e5';
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // 6. Pink Doodle (Tinu leaning into him)
+  const gX = CX + 44 * SC;
+  const gY = BASE_Y + 18 * SC;
+  ctx.fillStyle = '#ff6584';
+  ctx.beginPath();
+  ctx.ellipse(gX, gY, 33 * SC, 45 * SC, 0.05, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(gX - 6 * SC, gY - 54 * SC, 25 * SC, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 7. Rain Fall & Umbrella Collision Physics
+  ctx.lineWidth = 1.3;
   raindrops.forEach(d => {
-    // Check collision with umbrella top curve
     const dx = d.x - CX;
     const dy = d.y - umbCY;
     const dist = Math.sqrt(dx*dx + dy*dy);
 
+    // Hit top curve of umbrella
     if (dist < umbRadius && d.y < umbCY && d.y > umbCY - umbRadius) {
-      // Hit umbrella: create small splash droplet
       if (Math.random() < 0.25) {
         splashes.push({
           x: d.x, y: d.y, vx: (Math.random() - 0.5) * 2, vy: -Math.random() * 2 - 1, life: 1
@@ -436,11 +515,11 @@ function renderRain() {
       return;
     }
 
-    rCtx.beginPath();
-    rCtx.moveTo(d.x, d.y);
-    rCtx.lineTo(d.x + d.vx * 2, d.y + d.len);
-    rCtx.strokeStyle = `rgba(185, 220, 255, ${d.alpha})`;
-    rCtx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y);
+    ctx.lineTo(d.x + d.vx * 2, d.y + d.len);
+    ctx.strokeStyle = `rgba(185, 220, 255, ${d.alpha})`;
+    ctx.stroke();
 
     d.y += d.vy;
     d.x += d.vx;
@@ -457,13 +536,13 @@ function renderRain() {
     }
   });
 
-  // Render splashes
+  // Render ground and umbrella splashes
   for (let i = splashes.length - 1; i >= 0; i--) {
     const s = splashes[i];
-    rCtx.beginPath();
-    rCtx.arc(s.x, s.y, 1.2, 0, Math.PI*2);
-    rCtx.fillStyle = `rgba(195, 225, 255, ${s.life * 0.6})`;
-    rCtx.fill();
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, 1.2, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(195, 225, 255, ${s.life * 0.6})`;
+    ctx.fill();
     s.x += s.vx;
     s.y += s.vy;
     s.vy += 0.2;
@@ -471,120 +550,10 @@ function renderRain() {
     if (s.life <= 0) splashes.splice(i, 1);
   }
 
-  requestAnimationFrame(renderRain);
+  requestAnimationFrame(renderScene);
 }
 
-/* ── DOODLE COUPLE & FAIRY LIGHTS ────────── */
-function drawDoodleScene() {
-  dCtx.clearRect(0, 0, W, H);
-  const CX = W / 2;
-  const BASE_Y = H * 0.82;
-  const SC = Math.min(W, H) / 600;
-
-  // 1. Double Row of Glowing Fairy Lights
-  const drawString = (yOff, count) => {
-    dCtx.beginPath();
-    dCtx.moveTo(0, yOff);
-    dCtx.quadraticCurveTo(CX, yOff + 45 * SC, W, yOff + 10 * SC);
-    dCtx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-    dCtx.lineWidth = 1.5;
-    dCtx.stroke();
-
-    for (let i = 1; i < count; i++) {
-      const t = i / count;
-      const bx = (1 - t) * (1 - t) * 0 + 2 * (1 - t) * t * CX + t * t * W;
-      const by = (1 - t) * (1 - t) * yOff + 2 * (1 - t) * t * (yOff + 45 * SC) + t * t * (yOff + 10 * SC);
-
-      dCtx.beginPath();
-      dCtx.arc(bx, by, 7.5 * SC, 0, Math.PI * 2);
-      dCtx.fillStyle = 'rgba(255, 238, 180, 0.95)';
-      dCtx.shadowColor = '#ffe394';
-      dCtx.shadowBlur = 18;
-      dCtx.fill();
-      dCtx.shadowBlur = 0;
-    }
-  };
-  drawString(H * 0.13, 9);
-  drawString(H * 0.22, 11);
-
-  // 2. Wet Ground Silhouette
-  dCtx.beginPath();
-  dCtx.moveTo(0, BASE_Y + 70 * SC);
-  dCtx.quadraticCurveTo(CX, BASE_Y + 15 * SC, W, BASE_Y + 70 * SC);
-  dCtx.lineTo(W, H);
-  dCtx.lineTo(0, H);
-  dCtx.fillStyle = '#040912';
-  dCtx.fill();
-
-  // 3. Umbrella Structure
-  const umbCX = CX;
-  const umbCY = BASE_Y - 145 * SC;
-  const umbRadius = 135 * SC;
-
-  // Red Umbrella Dome
-  dCtx.beginPath();
-  dCtx.arc(umbCX, umbCY, umbRadius, Math.PI, 0, false);
-  dCtx.fillStyle = '#e61e4d';
-  dCtx.fill();
-  dCtx.lineWidth = 3.5 * SC;
-  dCtx.strokeStyle = '#120206';
-  dCtx.stroke();
-
-  // Scalloped Rims & Inner Ribs
-  dCtx.beginPath();
-  const segments = 5;
-  for (let i = 0; i < segments; i++) {
-    const x1 = umbCX - umbRadius + (i * (umbRadius * 2) / segments);
-    const x2 = x1 + (umbRadius * 2) / segments;
-    dCtx.quadraticCurveTo((x1 + x2) / 2, umbCY - 12 * SC, x2, umbCY);
-    dCtx.moveTo(umbCX, umbCY - umbRadius);
-    dCtx.lineTo((x1 + x2) / 2, umbCY);
-  }
-  dCtx.stroke();
-
-  // Handle
-  dCtx.beginPath();
-  dCtx.moveTo(umbCX, umbCY);
-  dCtx.lineTo(umbCX, BASE_Y - 20 * SC);
-  dCtx.quadraticCurveTo(umbCX, BASE_Y - 8 * SC, umbCX - 12 * SC, BASE_Y - 8 * SC);
-  dCtx.strokeStyle = '#1f1f1f';
-  dCtx.lineWidth = 4.5 * SC;
-  dCtx.stroke();
-
-  // 4. Blue Doodle (Aditya holding the umbrella over her)
-  const bX = CX - 48 * SC;
-  const bY = BASE_Y + 15 * SC;
-  dCtx.fillStyle = '#1e88e5';
-  dCtx.beginPath();
-  dCtx.ellipse(bX, bY, 34 * SC, 46 * SC, -0.05, 0, Math.PI * 2);
-  dCtx.fill();
-  dCtx.beginPath();
-  dCtx.arc(bX, bY - 56 * SC, 26 * SC, 0, Math.PI * 2);
-  dCtx.fill();
-
-  // Arm reaching up to hold umbrella handle
-  dCtx.beginPath();
-  dCtx.moveTo(bX + 18 * SC, bY - 20 * SC);
-  dCtx.quadraticCurveTo(umbCX - 5 * SC, BASE_Y - 15 * SC, umbCX, BASE_Y - 22 * SC);
-  dCtx.lineWidth = 9 * SC;
-  dCtx.strokeStyle = '#1e88e5';
-  dCtx.lineCap = 'round';
-  dCtx.stroke();
-
-  // 5. Pink Doodle (Tinu leaning into him)
-  const gX = CX + 44 * SC;
-  const gY = BASE_Y + 18 * SC;
-  dCtx.fillStyle = '#ff6584';
-  dCtx.beginPath();
-  dCtx.ellipse(gX, gY, 33 * SC, 45 * SC, 0.05, 0, Math.PI * 2);
-  dCtx.fill();
-  dCtx.beginPath();
-  dCtx.arc(gX - 6 * SC, gY - 54 * SC, 25 * SC, 0, Math.PI * 2);
-  dCtx.fill();
-}
-
-resizeCanvases();
-renderRain();
+renderScene();
 </script>
 </body>
 </html>
