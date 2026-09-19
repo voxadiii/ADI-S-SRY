@@ -16,34 +16,34 @@
     background: #061124;
   }
 
-  /* ── VIEWPORT CONTAINER ──────────────── */
+  /* ── PAGE CONTROL (FOOLPROOF TOGGLE) ──── */
   .page {
+    display: none;
     position: absolute;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    display: none;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+  .page.active-page {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 18px 18px;
-    box-sizing: border-box;
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
-  }
-  .page.active {
-    display: flex;
-    opacity: 1;
+    z-index: 10;
   }
 
-  /* ── PASTEL GRID BACKGROUND (SCREENS 1 & 2) ── */
+  /* ── PASTEL GRID BACKGROUND (PAGES 1 & 2) ── */
   .grid-bg {
     background-color: #fff9fa;
     background-image: 
       linear-gradient(rgba(240, 195, 205, 0.45) 1px, transparent 1px),
       linear-gradient(90deg, rgba(240, 195, 205, 0.45) 1px, transparent 1px);
     background-size: 26px 26px;
+    padding: 24px 18px 18px;
     overflow: hidden;
+    position: relative;
   }
 
   .washi-top-right {
@@ -77,7 +77,7 @@
 
   /* ── SCREEN 1: COVER ─────────────────── */
   .cover-header {
-    margin-top: 12vh;
+    margin-top: 10vh;
     text-align: center;
     z-index: 2;
   }
@@ -101,7 +101,6 @@
     font-style: italic;
   }
 
-  /* Buttons */
   .dash-btn {
     border: 2px dashed #9c2d4c;
     background: #fff0f3;
@@ -114,12 +113,11 @@
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(230, 100, 130, 0.18);
     transition: transform 0.2s ease, background 0.2s ease;
-    z-index: 5;
+    z-index: 15;
     outline: none;
   }
   .dash-btn:active { transform: scale(0.95); background: #ffd9e2; }
 
-  /* Bunny Container */
   .bunny-container {
     position: relative;
     width: 170px;
@@ -145,15 +143,15 @@
 
   /* ── SCREEN 2: THE LETTER ────────────── */
   .letter-wrapper {
-    width: 100%;
-    max-width: 440px;
-    height: 66vh;
+    width: 94%;
+    max-width: 480px;
+    height: 70vh;
     background: #fffdf7;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(160, 60, 80, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(160, 60, 80, 0.18);
     position: relative;
-    border: 1px solid rgba(240, 180, 195, 0.5);
-    margin-top: 3vh;
+    border: 1px solid rgba(240, 180, 195, 0.6);
+    margin-top: 2vh;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -170,14 +168,15 @@
     padding: 26px 20px 20px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    height: 100%;
   }
   .letter-text {
     font-family: 'Playfair Display', serif;
     color: #3b1c23;
-    font-size: clamp(0.95rem, 3.8vw, 1.05rem);
-    line-height: 1.68;
+    font-size: clamp(0.96rem, 3.6vw, 1.05rem);
+    line-height: 1.7;
   }
-  .letter-text p { margin-bottom: 12px; }
+  .letter-text p { margin-bottom: 14px; }
   .letter-signature {
     font-family: 'Caveat', cursive;
     font-size: 1.35rem;
@@ -232,7 +231,7 @@
     letter-spacing: 1.5px;
     font-family: 'Quicksand', sans-serif;
     pointer-events: none;
-    z-index: 20;
+    z-index: 25;
   }
   .dark-watermark {
     color: rgba(255, 255, 255, 0.4);
@@ -245,13 +244,13 @@
 </head>
 <body>
 
-<!-- Audio Player linked to your uploaded song.mp3 -->
+<!-- Audio Player linked directly to your local song.mp3 -->
 <audio id="bgm" loop preload="auto">
   <source src="song.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ── PAGE 1: COVER ── -->
-<div class="page grid-bg active" id="page-1">
+<div class="page grid-bg active-page" id="page-1">
   <div class="scallop-pink"></div>
   <div class="washi-top-right"></div>
   <div class="washi-mid-left"></div>
@@ -262,7 +261,7 @@
     <p class="cover-subtitle">Can we talk for a minute, Tinu?</p>
   </div>
 
-  <button class="dash-btn" onclick="showPage(2)">Open</button>
+  <button type="button" class="dash-btn" onclick="showPage(2)">Open</button>
 
   <div class="bunny-container">
     <div class="speech-bubble">I'm sorry..</div>
@@ -312,9 +311,9 @@
     </div>
   </div>
 
-  <div style="display: flex; gap: 14px; align-items: center; z-index: 5; margin-bottom: 22px;">
-    <button class="dash-btn" style="padding: 10px 22px; font-size: 0.95rem;" onclick="showPage(1)">Back</button>
-    <button class="dash-btn" onclick="showPage(3)">Continue ❤️</button>
+  <div style="display: flex; gap: 14px; align-items: center; z-index: 15; margin-bottom: 22px;">
+    <button type="button" class="dash-btn" style="padding: 10px 22px; font-size: 0.95rem;" onclick="showPage(1)">Back</button>
+    <button type="button" class="dash-btn" onclick="showPage(3)">Continue ❤️</button>
   </div>
 
   <div class="aditya-copyright light-watermark">
@@ -337,24 +336,37 @@
 </div>
 
 <script>
-/* ── SCREEN CONTROLLER ───────────────────── */
+/* ── STRICT PAGE CONTROLLER ──────────────── */
 const bgm = document.getElementById('bgm');
 
 function showPage(num) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById('page-' + num);
-  if (target) target.classList.add('active');
+  // Hide all pages
+  const allPages = document.querySelectorAll('.page');
+  allPages.forEach(p => {
+    p.classList.remove('active-page');
+    p.style.display = 'none';
+  });
 
-  // Trigger song on first user interaction
-  if (num === 2 || num === 3) {
-    bgm.play().catch(() => {});
+  // Display target page
+  const target = document.getElementById('page-' + num);
+  if (target) {
+    target.style.display = 'flex';
+    target.classList.add('active-page');
   }
+
+  // Audio Playback
+  if (num === 2 || num === 3) {
+    if (bgm.paused) {
+      bgm.play().catch(() => {});
+    }
+  }
+
   if (num === 3) {
     resizeCanvas();
   }
 }
 
-/* ── RAINY DOODLE SCENE CANVAS ───────────── */
+/* ── RAINY DOODLE CANVAS SYSTEM ──────────── */
 const canvas = document.getElementById('scene-canvas');
 const ctx    = canvas.getContext('2d');
 let W, H;
@@ -366,7 +378,6 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Rain drops and splashes
 const RAIN_COUNT = 320;
 const raindrops = Array.from({length: RAIN_COUNT}, () => ({
   x: Math.random() * window.innerWidth,
@@ -379,14 +390,15 @@ const raindrops = Array.from({length: RAIN_COUNT}, () => ({
 const splashes = [];
 
 function renderScene() {
-  if (!document.getElementById('page-3').classList.contains('active')) {
+  const p3 = document.getElementById('page-3');
+  if (!p3 || p3.style.display === 'none') {
     requestAnimationFrame(renderScene);
     return;
   }
 
   ctx.clearRect(0, 0, W, H);
 
-  // 1. Deep Midnight Gradient Background
+  // 1. Deep Midnight Blue Night
   const sky = ctx.createLinearGradient(0, 0, 0, H);
   sky.addColorStop(0, '#0a172e');
   sky.addColorStop(0.65, '#050c18');
@@ -400,7 +412,7 @@ function renderScene() {
   const umbCY = BASE_Y - 145 * SC;
   const umbRadius = 135 * SC;
 
-  // 2. Fairy Lights Overhead
+  // 2. Overhead Fairy Lights
   const drawString = (yOff, count) => {
     ctx.beginPath();
     ctx.moveTo(0, yOff);
@@ -426,7 +438,7 @@ function renderScene() {
   drawString(H * 0.13, 9);
   drawString(H * 0.22, 11);
 
-  // 3. Wet Ground Silhouette
+  // 3. Silhouette Hill
   ctx.beginPath();
   ctx.moveTo(0, BASE_Y + 70 * SC);
   ctx.quadraticCurveTo(CX, BASE_Y + 15 * SC, W, BASE_Y + 70 * SC);
@@ -444,7 +456,7 @@ function renderScene() {
   ctx.strokeStyle = '#120206';
   ctx.stroke();
 
-  // Scalloped Rims & Ribs
+  // Scallops & Ribs
   ctx.beginPath();
   const segments = 5;
   for (let i = 0; i < segments; i++) {
@@ -485,7 +497,7 @@ function renderScene() {
   ctx.lineCap = 'round';
   ctx.stroke();
 
-  // 6. Pink Doodle (Tinu leaning into him)
+  // 6. Pink Doodle (Tinu)
   const gX = CX + 44 * SC;
   const gY = BASE_Y + 18 * SC;
   ctx.fillStyle = '#ff6584';
@@ -496,14 +508,14 @@ function renderScene() {
   ctx.arc(gX - 6 * SC, gY - 54 * SC, 25 * SC, 0, Math.PI * 2);
   ctx.fill();
 
-  // 7. Rain Fall & Umbrella Collision Physics
+  // 7. Rain Engine
   ctx.lineWidth = 1.3;
   raindrops.forEach(d => {
     const dx = d.x - CX;
     const dy = d.y - umbCY;
     const dist = Math.sqrt(dx*dx + dy*dy);
 
-    // Hit top curve of umbrella
+    // Collision with top dome of umbrella
     if (dist < umbRadius && d.y < umbCY && d.y > umbCY - umbRadius) {
       if (Math.random() < 0.25) {
         splashes.push({
@@ -536,7 +548,7 @@ function renderScene() {
     }
   });
 
-  // Render ground and umbrella splashes
+  // Render splashes
   for (let i = splashes.length - 1; i >= 0; i--) {
     const s = splashes[i];
     ctx.beginPath();
